@@ -1,34 +1,37 @@
 {
-  "name" : "mongoose-troop",
-  "version" : "0.0.9",
+  "name" : "mongoose-utilities",
   "description" : "a collection of plugins for mongoose",
+  "version" : "0.1.0",
+  "homepage" : "https://github.com/janez89/mongoose-utilities",
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/janez89/mongoose-utilities.git"
+  },
   "main" : "index.js",
+  "engine": "node >= 0.8.0",
   "bin" : {},
   "directories" : {
     "test" : "test"
   },
-  "scripts" : {
-    "test": "make test && make clean"
+  "scripts": {
+    "test": "mocha -R spec"
   },
   "optionalDependencies" : {
-    "bcrypt": "~0.7.5",
-    "redis": ">= 0.7.1"
+    "bcrypt": "~0.7.6",
+    "redis": ">= 0.8.4"
   },
   "dependencies" : {
-    "directory": "0.0.x", 
-    "mongoose": "~3.6.9"
+    "directory": "0.1.0", 
+    "mongoose": "~3.6.16"
   },
   "devDependencies" : {
-    "mocha": "~1.8.2"
+    "mocha": "~1.12.0",
+    "should": ""
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "git://github.com/tblobaum/mongoose-troop.git"
-  },
-  "homepage" : "https://github.com/tblobaum/mongoose-troop",
   "keywords" : [
     "mongoose",
     "troop",
+    "utilities",
     "acl",
     "auth",
     "slugify",
@@ -36,16 +39,19 @@
     "search",
     "paginate",
     "pagination",
-    "obfuscate",
     "merge",
     "getdbrefs"
   ],
   "author" : {
-    "name" : "Thomas Blobaum",
-    "email" : "tblobaum@gmail.com",
-    "url" : "https://github.com/tblobaum/"
+    "name" : "janez89",
+    "email" : "m.janee@gmail.com",
+    "url" : "https://github.com/janez89/"
   },
   "contributors": [
+  {
+    "name" : "Thomas Blobaum",
+    "url" : "https://github.com/tblobaum/"
+  },
   { 
     "name": "Profulla Sadangi", 
     "url": "https://github.com/butu5/"
@@ -53,10 +59,6 @@
   {
     "name": "Beau Sorensen", 
     "url": "https://github.com/sorensen/"
-  },
-  {
-    "name": "Janos Meszaros", 
-    "url": "https://github.com/janez89/"
   }
   ],
   "license" : "MIT"
