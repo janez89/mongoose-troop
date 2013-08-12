@@ -14,7 +14,7 @@
     "test" : "test"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec -t 2500"
   },
   "optionalDependencies" : {
     "bcrypt": "~0.7.6",
