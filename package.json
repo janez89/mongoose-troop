@@ -20,8 +20,7 @@
     "bcrypt": "~0.7.6",
     "redis": ">= 0.8.4"
   },
-  "dependencies" : {
-    "directory": "0.1.0", 
+  "dependencies" : { 
     "mongoose": "~3.6.16"
   },
   "devDependencies" : {
