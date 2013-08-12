@@ -22,12 +22,31 @@ A collection of handy plugins for mongoose
   * [removeDefaults](#removedefaults) (remove default values from a document)
   * [getdbrefs](#getdbrefs) (find all document DBRefs)
 * [Changelog](#changelog)
-* [Authors](#authors)
+* [Authors and contributors](#authors-and-contributors)
 * [License](#license)
 
 ***
 
 ## Usage
+
+```javascript
+var mongoose = require('mongoose')
+  , mUtilities = require('mongoose-utilities')
+  , Schema = mongoose.Schema;
+
+mongoose.connect('mongodb://localhost/your-database');
+
+var FooSchema = new Schema({
+  name: {type: String}
+});
+
+
+FooSchema.plugin(mUtilities.PluginName, options);
+
+var Foo= mongoose.model('foo', FooSchema); // Category
+```
+
+***
 
 ## Plugins
 
@@ -528,10 +547,32 @@ This plugin does not currently support nested paths
 
 ***
 
-## Contributing
+### Changelog
+
+### Aug 12, 2013 - version: 0.1.0
+* [Mongoose Troop](https://github.com/tblobaum/mongoose-troop) forked
+* removed directory dependency
+* removed obfuscate plugin
+* Changed pagination API
+* Changed rest API
+* updated README.md
+
+[Go to contents](#overview)
+
+***
+
+### Authors and contributors
+
+* Thomas Blobaum: [https://github.com/tblobaum](https://github.com/tblobaum)
+* Janos Meszaros: [https://github.com/janez89](https://github.com/janez89)
+* Profulla Sadangi: [https://github.com/butu5](https://github.com/butu5)
+* Beau Sorensen: [https://github.com/sorensen](https://github.com/sorensen)
 
 This project is a work in progress and subject to API changes, please feel free to contribute
 
+[Go to contents](#overview)
+
+***
 
 ## License
 
