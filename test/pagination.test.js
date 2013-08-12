@@ -47,12 +47,12 @@ describe('Pagination', function () {
       FooModel.paginate({
         page: 1
       , limit: 10
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 6)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 10)
+        assert.strictEqual(provider.count, 55)
+        assert.strictEqual(provider.pages, 6)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 10)
         done()
       })
     })
@@ -61,12 +61,12 @@ describe('Pagination', function () {
       FooModel.paginate({
         page: 1
       , limit: 25
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 25)
+        assert.strictEqual(provider.count, 55)
+        assert.strictEqual(provider.pages, 3)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 25)
         done()
       })
     })
@@ -76,12 +76,12 @@ describe('Pagination', function () {
         query: null
       , page: 1
       , limit: 25
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 25)
+        assert.strictEqual(provider.count, 55)
+        assert.strictEqual(provider.pages, 3)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 25)
         done()
       })
     })
@@ -91,12 +91,12 @@ describe('Pagination', function () {
         query: {}
       , page: 1
       , limit: 25
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 25)
+        assert.strictEqual(provider.count, 55)
+        assert.strictEqual(provider.pages, 3)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 25)
         done()
       })
     })
@@ -106,35 +106,35 @@ describe('Pagination', function () {
         query: { count: 10 }
       , page: 1
       , limit: 25
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 1)
-        assert.strictEqual(pages, 1)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 1)
-        assert.strictEqual(docs[0].count, 10)
+        assert.strictEqual(provider.count, 1)
+        assert.strictEqual(provider.pages, 1)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 1)
+        assert.strictEqual(provider.docs[0].count, 10)
         done()
       })
     })
 
     it('should go the last page', function (done) {
-      FooModel.lastPage(function (err, docs, total, pages, current) {
+      FooModel.lastPage(function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 6)
-        assert.strictEqual(current, 6)
-        assert.strictEqual(docs.length, 5)
+        assert.strictEqual(provider.count, 55)
+        assert.strictEqual(provider.pages, 6)
+        assert.strictEqual(provider.page, 6)
+        assert.strictEqual(provider.docs.length, 5)
         done()
       })
     })
 
     it('should go the first page', function (done) {
-      FooModel.firstPage(function (err, docs, total, pages, current) {
+      FooModel.firstPage(function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 55)
-        assert.strictEqual(pages, 6)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 10)
+        assert.strictEqual(provider.count, 55)
+        assert.strictEqual(provider.pages, 6)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 10)
         done()
       })
     })
@@ -184,14 +184,14 @@ describe('Pagination', function () {
     })
 
     it('should paginate', function (done) {
-      BarModel.paginate(function (err, docs, total, pages, current) {
+      BarModel.paginate(function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 45)
-        assert.strictEqual(pages, 3)
-        assert.strictEqual(current, 1)
-        assert.strictEqual(docs.length, 20)
-        assert.equal(docs[0].count, 11)
-        assert.strictEqual(docs[0].name, undefined)
+        assert.strictEqual(provider.count, 45)
+        assert.strictEqual(provider.pages, 3)
+        assert.strictEqual(provider.page, 1)
+        assert.strictEqual(provider.docs.length, 20)
+        assert.equal(provider.docs[0].count, 11)
+        assert.strictEqual(provider.docs[0].name, undefined)
         done()
       })
     })
@@ -200,12 +200,12 @@ describe('Pagination', function () {
       BarModel.paginate({ 
         page: 2
       , limit: 5
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 45)
-        assert.strictEqual(pages, 9)
-        assert.strictEqual(current, 2)
-        assert.strictEqual(docs.length, 5)
+        assert.strictEqual(provider.count, 45)
+        assert.strictEqual(provider.pages, 9)
+        assert.strictEqual(provider.page, 2)
+        assert.strictEqual(provider.docs.length, 5)
         done()
       })
     })
@@ -213,30 +213,30 @@ describe('Pagination', function () {
     it('should remember the last options', function (done) {
       BarModel.paginate({ 
         page: 7
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 45)
-        assert.strictEqual(pages, 9)
-        assert.strictEqual(current, 7)
-        assert.strictEqual(docs.length, 5)
-        assert.strictEqual(docs[0].foo.count, 55)
+        assert.strictEqual(provider.count, 45)
+        assert.strictEqual(provider.pages, 9)
+        assert.strictEqual(provider.page, 7)
+        assert.strictEqual(provider.docs.length, 5)
+        assert.strictEqual(provider.docs[0].foo.count, 55)
         done()
       })
     })
 
     it('should paginate with ascending sort and population', function (done) {
-      BarModel.paginate({ 
+      BarModel.paginate({
         page: 2
       , limit: 5
       , sort: { count: 1 }
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 45)
-        assert.strictEqual(pages, 9)
-        assert.strictEqual(current, 2)
-        assert.strictEqual(docs.length, 5)
-        assert.strictEqual(docs[0].count, 16)
-        assert.strictEqual(docs[0].foo.count, 55)
+        assert.strictEqual(provider.count, 45)
+        assert.strictEqual(provider.pages, 9)
+        assert.strictEqual(provider.page, 2)
+        assert.strictEqual(provider.docs.length, 5)
+        assert.strictEqual(provider.docs[0].count, 16)
+        assert.strictEqual(provider.docs[0].foo.count, 55)
         done()
       })
     })
@@ -246,14 +246,14 @@ describe('Pagination', function () {
         page: 2
       , limit: 5
       , sort: { count: -1 }
-      }, function (err, docs, total, pages, current) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(total, 45)
-        assert.strictEqual(pages, 9)
-        assert.strictEqual(current, 2)
-        assert.strictEqual(docs.length, 5)
-        assert.strictEqual(docs[0].count, 50)
-        assert.strictEqual(docs[0].foo.count, 55)
+        assert.strictEqual(provider.count, 45)
+        assert.strictEqual(provider.pages, 9)
+        assert.strictEqual(provider.page, 2)
+        assert.strictEqual(provider.docs.length, 5)
+        assert.strictEqual(provider.docs[0].count, 50)
+        assert.strictEqual(provider.docs[0].foo.count, 55)
         done()
       })
     })
