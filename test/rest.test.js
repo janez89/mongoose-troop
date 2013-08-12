@@ -106,9 +106,9 @@ describe('REST', function () {
         query: {}
       , limit: 10
       , page: 2
-      }, function (err, docs) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(docs.length, 10)
+        assert.strictEqual(provider.docs.length, 10)
         done()
       })
     })
@@ -118,7 +118,7 @@ describe('REST', function () {
         query: {title: 'put'}
       , limit: 10
       , page: 2
-      }, function (err, docs) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
         done()
       })
@@ -130,10 +130,10 @@ describe('REST', function () {
       , limit: 10
       , page: 2
       , sort: { count: 1 }
-      }, function (err, docs) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(docs.length, 10)
-        assert.strictEqual(docs[0].count, 12)
+        assert.strictEqual(provider.docs.length, 10)
+        assert.strictEqual(provider.docs[0].count, 12)
         done()
       })
     })
@@ -144,9 +144,9 @@ describe('REST', function () {
       , limit: 10
       , page: 2
       , sort: { count: -1 }
-      }, function (err, docs) {
+      }, function (err, provider) {
         assert.strictEqual(err, null)
-        assert.strictEqual(docs.length, 10)
+        assert.strictEqual(provider.docs.length, 10)
         done()
       })
     })
