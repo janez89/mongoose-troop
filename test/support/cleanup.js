@@ -4,14 +4,16 @@
 
 var assert = require('assert')
   , db = require('./common').db
-  , dropDatabase = require('../../helpers').dropDatabase
-  , dropCollections = require('../../helpers').dropCollections
+  , mongoose = require('./common').mongoose
+
 
 describe('#cleanup()', function() {
   it('should drop the database and disconnect', function(done) {
-    dropDatabase(db, function(err, result) {
-      assert.strictEqual(err, null)
-      done()
-    })
+  	mongoose.connection.on('open', function (){
+		mongoose.connection.db.dropDatabase(function (err) {
+	  		assert.strictEqual(err, null)
+	      done()
+	  	})
+	})
   })
 })
