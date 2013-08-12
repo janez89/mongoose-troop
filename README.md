@@ -1,24 +1,37 @@
 
-# Mongoose Troop [![Build Status](https://secure.travis-ci.org/tblobaum/mongoose-troop.png)](http://travis-ci.org/tblobaum/mongoose-troop) 
+# Mongoose Utilities 
 
+[![Build Status](https://travis-ci.org/janez89/mongoose-utilities.png?branch=master)](https://travis-ci.org/janez89/mongoose-utilities)
+[![NPM version](https://badge.fury.io/js/mongoose-utilities.png)](http://badge.fury.io/js/mongoose-utilities)
+
+The mongoose utilities is a fork a [Mongoose Troop](https://github.com/tblobaum/mongoose-troop)
 A collection of handy plugins for mongoose
 
-## Contents
+## Overview
+* [Usage](#usage)
+* [Plugins](#plugins)
+  * [acl](#acl) (simple access control list)
+  * [basicAuth](#basicauth) (simple authentication and registration)
+  * [timestamp](#timestamp) (automatic created and modified timestamps)
+  * [slugify](#slugify) (url-friendly copies of string properties)
+  * [keywords](#keywords) (search-friendly array of stemmed words from string properties)
+  * [pubsub](#pubsub) (message passing)
+  * [pagination](#pagination) (query pagination)
+  * [rest](#rest) (http or rpc controller)
+  * [merge](#merge) (merge a document into another)
+  * [removeDefaults](#removedefaults) (remove default values from a document)
+  * [getdbrefs](#getdbrefs) (find all document DBRefs)
+* [Changelog](#changelog)
+* [Authors](#authors)
+* [License](#license)
 
-* [acl](#acl) (simple access control list)
-* [basicAuth](#basicauth) (simple authentication and registration)
-* [timestamp](#timestamp) (automatic created and modified timestamps)
-* [slugify](#slugify) (url-friendly copies of string properties)
-* [keywords](#keywords) (search-friendly array of stemmed words from string properties)
-* [pubsub](#pubsub) (message passing)
-* [pagination](#pagination) (query pagination)
-* [rest](#rest) (http or rpc controller)
-* [obfuscate](#obfuscate) (objectID encryption / decryption)
-* [merge](#merge) (merge a document into another)
-* [removeDefaults](#removedefaults) (remove default values from a document)
-* [getdbrefs](#getdbrefs) (find all document DBRefs)
+***
 
-<!-- The annotated source can be found [here](http://tblobaum.github.com/mongoose-troop/docs/) -->
+## Usage
+
+## Plugins
+
+[Go to contents](#overview)
 
 ***
 
@@ -39,6 +52,7 @@ Remove `key` access to a Model instance
 
 Return or callback a boolean
 
+[Go to contents](#overview)
 
 ***
 
@@ -74,11 +88,11 @@ Create a new user with given attributes
 
 ```javascript
 var mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
+  , mUtilities = require('mongoose-utilities')
   , db = mongoose.connect()
   , UserSchema = new mongoose.Schema()
 
-UserSchema.plugin(troop.basicAuth)
+UserSchema.plugin(mUtilities.basicAuth)
 
 var User = mongoose.model('user', UserSchema)
 
@@ -104,6 +118,7 @@ User.findOne({ username: 'foo'}, function(err, doc) {
 })
 ````
 
+[Go to contents](#overview)
 
 ***
 
@@ -121,10 +136,10 @@ Adds a `created` and `modified` property to the schema, updating the timestamps 
 
 ```javascript
 var mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
+  , mUtilities = require('mongoose-utilities')
   , FooSchema = new mongoose.Schema()
 
-FooSchema.plugin(troop.timestamp)
+FooSchema.plugin(mUtilities.timestamp)
 ````
 
 ### Note
@@ -160,10 +175,10 @@ Converts `this is a title` to `this-is-a-title`
 
 ```javascript
 var mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
+  , mUtilities = require('mongoose-utilities')
   , FooSchema = new mongoose.Schema()
 
-FooSchema.plugin(troop.slugify)
+FooSchema.plugin(mUtilities.slugify)
 
 var instance = new FooSchema({title: 'well hello there!'})
 
@@ -176,6 +191,7 @@ instance.save(function(err, doc) {
 
 This plugin does not currently support nested paths
 
+[Go to contents](#overview)
 
 ***
 
@@ -206,14 +222,14 @@ Manually calculate a keyword array with a given string
 
 ```javascript
 var mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
+  , mUtilities = require('mongoose-utilities')
   , db = mongoose.connect()
 
 var FooSchema = new mongoose.Schema({
   text: String
 })
 
-FooSchema.plugin(troop.keywords, {
+FooSchema.plugin(mUtilities.keywords, {
   source: 'text'
 })
 
@@ -233,6 +249,7 @@ fooModel.find({
 
 This plugin does not currently support nested paths
 
+[Go to contents](#overview)
 
 ***
 
@@ -279,14 +296,14 @@ var redis = require('redis')
   , publish = redis.createClient()
   , subscribe = redis.createClient()
   , mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
+  , mUtilities = require('mongoose-utilities')
   , db = mongoose.connect()
 
 var FooSchema = new mongoose.Schema({
   name: String
 })
 
-FooSchema.plugin(troop.publish, {
+FooSchema.plugin(mUtilities.publish, {
   publish: redis
 , subscribe: subscribe
 })
@@ -331,12 +348,14 @@ You can also subscribe on the instance level
 instance.subscribe() // channel: 'foos:4d6e5acebcd1b3fac9000007'
 ````
 
+[Go to contents](#overview)
 
 ***
 
 ## pagination 
 
 Simple query pagination routines.
+Important! The API changed! - not compatible with the mongoose-troop
 
 ### Options
 
@@ -362,7 +381,7 @@ where the `count` field is incremented by 1 for each record, starting at 1.
 
 ```javascript
 var mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
+  , mUtilities = require('mongoose-utilities')
   , db = mongoose.connect()
 
 var FooSchema = new mongoose.Schema({
@@ -371,10 +390,10 @@ var FooSchema = new mongoose.Schema({
 , category: { type: mongoose.Schema.Types.ObjectId, ref: 'cat' }
 })
 
-FooSchema.plugin(troop.pagination)
+FooSchema.plugin(mUtilities.pagination)
 
 // OR with default settings
-FooSchema.plugin(troop.pagination, {
+FooSchema.plugin(mUtilities.pagination, {
   defaultPopulate: 'category', 
   defaultSort: { name: 1 }
 })
@@ -387,20 +406,20 @@ var CatSchema = new mongoose.Schema({
 
 var CatModel = mongoose.model('cat', CatSchema)
 
-FooModel.paginate({ page: 1 }, function (err, docs, count, pages, current) {
+FooModel.paginate({ page: 1 }, function (err, provider) {
 
-  // docs.length = 10
-  // count = 55
-  // pages = 6
-  // current = 1
-
+  // provider.docs.length = 10
+  // provider.count = 55
+  // provider.pages = 6
+  // provider.page = 1
+  // provider.limit = 10;
 })
 ````
 
 Which, since using the default options, can also be written as:
 
 ```javascript
-FooModel.firstPage(function (err, docs, count, pages, current) {
+FooModel.firstPage(function (err, provider) {
   // ...
 })
 ````
@@ -408,9 +427,9 @@ FooModel.firstPage(function (err, docs, count, pages, current) {
 Or, if you wanted the last page:
 
 ```javascript
-FooModel.lastPage(function (err, docs, count, pages, current) {
-  // docs.length = 5
-  // current = 6
+FooModel.lastPage(function (err, provider) {
+  // provider.docs.length = 5
+  // provider.page = 6
 })
 ````
 
@@ -424,12 +443,12 @@ FooModel.paginate({
 , fields: { field1: 1, field2: 1 }
 , sort: { field1: 1}
 , populate: 'field2'
-}, function(err, docs, count, pages, current) {
+}, function(err, provider) {
   
-  // docs.length = 5
-  // count = 30
-  // pages = 2
-  // current = 2
+  // provider.docs.length = 5
+  // provider.count = 30
+  // provider.pages = 2
+  // provider.page = 2
 
 })
 ````
@@ -448,6 +467,8 @@ a full set specified by the `limit` when this is the case.
 * [Mongoose Sort](http://mongoosejs.com/docs/api.html#query_Query-sort) - sorting records
 * [Population](http://mongoosejs.com/docs/populate.html) - There are no joins in MongoDB but sometimes we still want references to documents in other collections.
 
+[Go to contents](#overview)
+
 ***
 
 ## rest 
@@ -458,165 +479,7 @@ a full set specified by the `limit` when this is the case.
 
 Create a REST-ful controller for your models for use with flatiron/director, express, dnode or socket.io
 
-
-***
-
-## obfuscate 
-
-ObjectID encrypt/decryption. Recursively traverses a document, encrypting or decrypting 
-any ObjectID that is found to prevent leaking any server information contained in the ID, will 
-work with embedded documents as well as DBRefs.
-
-### Options
-
-* `encryptPath` Getter path for returning encrypted document (optional, default `obfuscate`)
-* `decryptPath` Setter path for decrypting an object and assigning it to the document (optional, default `deobfuscate`)
-* `algorithm` Encryption algorithm to use (optional, default `aes-256-cbc`)
-* `key` Encryption key to be used (optional, default `secret`)
-* `from` Encoding of the field to be encrypted (optional, default `utf8`)
-* `to` Encoding of the encrypted field (optional, default `hex`)
-
-### Methods
-
-####model.encrypt(string)
-
-####model.decrypt(string)
-
-####model.encode(object, boolean)
-
-####instance.encrypt(string)
-
-####instance.decrypt(string)
-
-### Example
-
-```javascript
-var mongoose = require('mongoose')
-  , troop = require('mongoose-troop')
-  , db = mongoose.connect()
-
-var BarSchema = new mongoose.Schema()
-  , UserSchema = new mongoose.Schema()
-  , SessionSchema = new mongoose.Schema()
-
-// A complicated schema
-var FooSchema = new mongoose.Schema({
-  dbref: { type: ObjectId, ref: BarSchema }
-, dbrefArray: [{ type: ObjectId, ref: BarSchema }]
-, nested: {
-    dbref: { type: ObjectId, ref: BarSchema }
-  , dbrefArray: [{ type: ObjectId, ref: BarSchema }]
-  , embedded: [FooSchema]
-}
-, embedded: [FooSchema]
-, user: { 
-    id: { type: Schema.ObjectId, ref: 'user' }
-  , session: {
-      sid: { type: Schema.ObjectId, ref: 'session' }
-    }
-  }
-})
-
-FooSchema.plugin(troop.obfuscate)
-
-var FooModel = mongoose.model('foo', FooSchema)
-  , BarModel = mongoose.model('bar', BarSchema)
-  , UserModel = mongoose.model('user', UserSchema)
-  , SessionSchema = mongoose.model('session', SessionSchema)
-
-var bar = new BarModel()
-  , user = new UserModel()
-  , session = new SessionModel()
-
-var foo = new FooModel({
-  dbref: bar
-, dbrefArray: [foo2, foo3]
-, embeddedArray: [foo]
-, nested: {
-    dbref: foo
-  , dbrefArray: [foo2, foo3]
-  , nested: [foo]
-}
-, embedded: {
-    id: user._id
-  , session: { sid: session._id }
-  }
-})
-
-var obfuscated = foo.obfuscate
-````
-
-Now we should have an obfuscated object like so
-
-``` js
-{
-  _id: '0edaf91b2b5fa8c06413cdbf9ebed72a90a2c5ae4fe9b837d24865bd92c56ab2'
-, dbref: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
-, dbrefArray: [
-    '0edaf91b2b5fa8c06413cdbf9ebed72a59ea2f1567c4ba640c02b02bb73f36d7'
-  , '0edaf91b2b5fa8c06413cdbf9ebed72aec369726048f7aa6cae9e8d20d7b2344'
-  ]
-, embedded: {
-    id: '0edaf91b2b5fa8c06413cdbf9ebed72a340f055306b64aeececd8835755008fc'
-  , session: {
-      sid: '0edaf91b2b5fa8c06413cdbf9ebed72a9f324d66d3a0e0d1c2fdd12d65efa3ea'
-    }
-  }
-, embeddedArray: [{
-    _id: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
-  }]
-, nested: {
-    dbref: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
-  , dbrefArray: [
-      '0edaf91b2b5fa8c06413cdbf9ebed72a59ea2f1567c4ba640c02b02bb73f36d7'
-    , '0edaf91b2b5fa8c06413cdbf9ebed72aec369726048f7aa6cae9e8d20d7b2344'
-    ]
-  , embeddedArray: [{
-      _id: '0edaf91b2b5fa8c06413cdbf9ebed72a4735e5707b8423055431a1fe65adad6b'
-    }]
-  }
-}
-````
-
-To deobfuscate the object, we can assign it back to the original model, or to another.
-
-```javascript
-var emptyFoo = new FooModel()
-
-emptyFoo.deobfuscate = obfuscated
-````
-
-Which should give us back the original object
-
-``` js
-{ 
-  _id: 4f1b234afe789543a3000008
-, dbref: 4f1b234afe789543a3000003
-, dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ] 
-, embedded: { 
-    id: 4f1b234afe789543a3000007
-  , session: { 
-      sid: 4f1b234afe789543a3000006 
-    }
-  }
-, embeddedArray:  [{
-    _id: 4f1b234afe789543a3000003
-  }]
-, nested: { 
-    dbref: 4f1b234afe789543a3000003
-  , dbrefArray: [ 4f1b234afe789543a3000004, 4f1b234afe789543a3000005 ] 
-  , embeddedArray: [{
-      _id: 4f1b234afe789543a3000003
-    }]
-  }
-}
-````
-
-### Note
-
-This plugin will not work with `Mixed` type schema paths, you will have to obfuscate
-those manually
-
+[Go to contents](#overview)
 
 ***
 
@@ -628,6 +491,7 @@ Merge JSON into your object more easily.
 instance.merge({title:'A new title', description:'A new description'}).save()
 ````
 
+[Go to contents](#overview)
 
 ***
 
@@ -645,6 +509,7 @@ instance.getdbrefs(function (refs) {
 
 This plugin does not currently support nested paths
 
+[Go to contents](#overview)
 
 ***
 
@@ -659,6 +524,7 @@ Remove all of the default values from your model instance.
 
 This plugin does not currently support nested paths
 
+[Go to contents](#overview)
 
 ***
 
@@ -691,3 +557,5 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+[Go to contents](#overview)
