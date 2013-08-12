@@ -555,6 +555,7 @@ This plugin does not currently support nested paths
 * removed obfuscate plugin
 * Changed pagination API
 * Changed rest API
+* updated tests
 * updated README.md
 
 [Go to contents](#overview)
