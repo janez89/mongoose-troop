@@ -54,34 +54,6 @@ function objectOrFunction(obj) {
   return obj
 }
 
-// Destroy a database and disconnect
-function dropDatabase (db, fn) {
-  db.connection.db.executeDbCommand({
-    dropDatabase: 1
-  }, function(err, result) {
-    db.disconnect()
-    fn && fn(err, result)
-  })
-}
-
-// Drop all collections in a database
-function dropCollections (db, each, fn) {
-  if (each && !fn) { fn = each; each = null }
-  var conn = db.connection
-    , cols = Object.keys(conn.collections)
-
-  cols.forEach(function (name, k) {
-    console.log('name: ', name, k)
-    conn.collections[name].drop(function (err) {
-      if (err == 'ns not found') {
-        err = null
-      }
-      each && each(err, name)
-    })
-  })
-  fn && fn(null)
-}
-
 // Exports
 module.exports = {
   emptyToSparse: emptyToSparse
@@ -89,6 +61,4 @@ module.exports = {
 , nestedPath: nestedPath
 , dataToObjects: dataToObjects
 , objectOrFunction: objectOrFunction
-, dropDatabase: dropDatabase
-, dropCollections: dropCollections
 }
