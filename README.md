@@ -5,6 +5,7 @@
 [![NPM version](https://badge.fury.io/js/mongoose-utilities.png)](http://badge.fury.io/js/mongoose-utilities)
 
 The mongoose utilities is a fork a [Mongoose Troop](https://github.com/tblobaum/mongoose-troop)
+
 A collection of handy plugins for mongoose
 
 ## Overview
@@ -15,7 +16,7 @@ A collection of handy plugins for mongoose
   * [timestamp](#timestamp) (automatic created and modified timestamps)
   * [slugify](#slugify) (url-friendly copies of string properties)
   * [keywords](#keywords) (search-friendly array of stemmed words from string properties)
-  * [pubsub](#pubsub) (message passing)
+  * [pubsub](#publish) (message passing)
   * [pagination](#pagination) (query pagination)
   * [rest](#rest) (http or rpc controller)
   * [merge](#merge) (merge a document into another)
@@ -49,6 +50,12 @@ var Foo= mongoose.model('foo', FooSchema); // Category
 ***
 
 ## Plugins
+
+Important! 
+A list of plugins that have changed since the troop and have new interface.
+
+* pagination changed
+* obfuscate removed
 
 [Go to contents](#overview)
 
@@ -166,6 +173,7 @@ FooSchema.plugin(mUtilities.timestamp)
 Using the virtual `created` timestamp you will lose the ability to run queries against it, 
 as well as a loss in precision, as it will return a timestamp in seconds.
 
+[Go to contents](#overview)
 
 ***
 
