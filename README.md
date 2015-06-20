@@ -557,6 +557,9 @@ This plugin does not currently support nested paths
 
 ### Changelog
 
+### Jun 20, 2015 - version: 0.1.1
+* bumped bcrypt version
+
 ### Aug 12, 2013 - version: 0.1.0
 * [Mongoose Troop](https://github.com/tblobaum/mongoose-troop) forked
 * removed directory dependency
